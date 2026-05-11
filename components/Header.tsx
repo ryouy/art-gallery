@@ -16,9 +16,6 @@ export function Header() {
         >
           Art Index
         </Link>
-        <Link href="/admin" className="mr-auto px-2 py-2 text-sm text-muted transition-colors hover:text-ink">
-          Admin
-        </Link>
         <nav className="flex items-center gap-1 text-sm text-muted">
           {navItems.map((item) => (
             <Link
@@ -29,6 +26,9 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+          <Link href="/admin" className="px-2 py-2 transition-colors hover:text-ink sm:px-3">
+            Admin
+          </Link>
           <a
             href="https://ryouyplayground.vercel.app/"
             target="_blank"
