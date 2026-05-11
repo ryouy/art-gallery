@@ -1,0 +1,127 @@
+"use client";
+
+import { useState } from "react";
+
+type UploadState = "idle" | "submitting" | "success" | "error";
+
+export function UploadForm() {
+  const [state, setState] = useState<UploadState>("idle");
+  const [message, setMessage] = useState("");
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setState("submitting");
+    setMessage("");
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch("/api/upload", {
+        method: "POST",
+        body: formData
+      });
+      const result = (await response.json()) as { message?: string; url?: string };
+
+      if (!response.ok) {
+        throw new Error(result.message ?? "Upload failed.");
+      }
+
+      setState("success");
+      setMessage(result.message ?? "Uploaded. Vercel will redeploy after GitHub receives the commit.");
+      form.reset();
+    } catch (error) {
+      setState("error");
+      setMessage(error instanceof Error ? error.message : "Upload failed.");
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="grid gap-8">
+      <div className="grid gap-5 border-b border-line pb-8 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm text-muted">
+          Type
+          <select name="kind" className="border border-line bg-bone px-3 py-3 text-ink" required>
+            <option value="paintings">Painting</option>
+            <option value="photos">Photo</option>
+          </select>
+        </label>
+
+        <label className="grid gap-2 text-sm text-muted">
+          Admin password
+          <input
+            name="password"
+            type="password"
+            className="border border-line bg-bone px-3 py-3 text-ink"
+            required
+          />
+        </label>
+      </div>
+
+      <div className="grid gap-5 sm:grid-cols-2">
+        <label className="grid gap-2 text-sm text-muted">
+          Title
+          <input name="title" className="border border-line bg-bone px-3 py-3 text-ink" required />
+        </label>
+
+        <label className="grid gap-2 text-sm text-muted">
+          Slug
+          <input
+            name="slug"
+            className="border border-line bg-bone px-3 py-3 text-ink"
+            placeholder="quiet-afternoon"
+            required
+          />
+        </label>
+
+        <label className="grid gap-2 text-sm text-muted">
+          Date
+          <input name="date" type="date" className="border border-line bg-bone px-3 py-3 text-ink" required />
+        </label>
+
+        <label className="grid gap-2 text-sm text-muted">
+          Materials
+          <input
+            name="materials"
+            className="border border-line bg-bone px-3 py-3 text-ink"
+            placeholder="Oil on canvas"
+          />
+        </label>
+      </div>
+
+      <label className="grid gap-2 text-sm text-muted">
+        Image
+        <input
+          name="image"
+          type="file"
+          accept="image/jpeg,image/png,image/webp,image/avif"
+          className="border border-line bg-bone px-3 py-3 text-ink file:mr-4 file:border-0 file:bg-ink file:px-4 file:py-2 file:text-bone"
+          required
+        />
+      </label>
+
+      <label className="grid gap-2 text-sm text-muted">
+        Description
+        <textarea
+          name="description"
+          rows={9}
+          className="border border-line bg-bone px-3 py-3 leading-7 text-ink"
+          required
+        />
+      </label>
+
+      <div className="flex flex-wrap items-center gap-4">
+        <button
+          type="submit"
+          disabled={state === "submitting"}
+          className="border border-ink bg-ink px-5 py-3 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {state === "submitting" ? "Uploading..." : "Upload work"}
+        </button>
+        {message ? (
+          <p className={`text-sm ${state === "error" ? "text-[#f0a7a7]" : "text-muted"}`}>{message}</p>
+        ) : null}
+      </div>
+    </form>
+  );
+}

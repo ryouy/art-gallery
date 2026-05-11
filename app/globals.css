@@ -1,0 +1,34 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+  --font-sans: Inter, "Helvetica Neue", Arial, "Hiragino Kaku Gothic ProN", "Yu Gothic", Meiryo, sans-serif;
+  --font-serif: "Times New Roman", "Yu Mincho", "Hiragino Mincho ProN", serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 70% 12%, rgba(242, 239, 231, 0.04), transparent 28rem),
+    #151514;
+  color: #f2efe7;
+}
+
+::selection {
+  background: #f2efe7;
+  color: #151514;
+}
+
+.prose-gallery p + p {
+  margin-top: 1rem;
+}
