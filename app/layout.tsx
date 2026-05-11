@@ -7,7 +7,10 @@ export const metadata: Metadata = {
     default: "Art Index",
     template: "%s | Art Index"
   },
-  description: "A refined online index of paintings and photographs."
+  description: "A refined online index of paintings and photographs.",
+  icons: {
+    icon: "/favi.svg"
+  }
 };
 
 export default function RootLayout({
