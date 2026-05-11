@@ -43,11 +43,11 @@ export function UploadForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="grid gap-8">
-      <div className="grid gap-5 border-b border-line pb-8 sm:grid-cols-2">
+    <form onSubmit={handleSubmit} className="grid gap-5">
+      <div className="grid gap-4 border-b border-line pb-5 sm:grid-cols-2">
         <label className="grid gap-2 text-sm text-muted">
           Type
-          <select name="kind" className="border border-line bg-bone px-3 py-3 text-ink" required>
+          <select name="kind" className="border border-line bg-bone px-3 py-2.5 text-ink" required>
             <option value="paintings">Painting</option>
             <option value="photos">Photo</option>
           </select>
@@ -58,23 +58,23 @@ export function UploadForm() {
           <input
             name="password"
             type="password"
-            className="border border-line bg-bone px-3 py-3 text-ink"
+            className="border border-line bg-bone px-3 py-2.5 text-ink"
             required
           />
         </label>
       </div>
 
-      <div className="grid gap-5 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <label className="grid gap-2 text-sm text-muted">
           Title
-          <input name="title" className="border border-line bg-bone px-3 py-3 text-ink" required />
+          <input name="title" className="border border-line bg-bone px-3 py-2.5 text-ink" required />
         </label>
 
         <label className="grid gap-2 text-sm text-muted">
           Slug
           <input
             name="slug"
-            className="border border-line bg-bone px-3 py-3 text-ink"
+            className="border border-line bg-bone px-3 py-2.5 text-ink"
             required
           />
         </label>
@@ -86,7 +86,7 @@ export function UploadForm() {
             name="date"
             type="date"
             defaultValue={todayValue()}
-            className="border border-line bg-bone px-3 py-3 text-ink"
+            className="border border-line bg-bone px-3 py-2.5 text-ink"
             required
           />
         </label>
@@ -95,7 +95,7 @@ export function UploadForm() {
           Materials
           <input
             name="materials"
-            className="border border-line bg-bone px-3 py-3 text-ink"
+            className="border border-line bg-bone px-3 py-2.5 text-ink"
           />
         </label>
       </div>
@@ -106,7 +106,7 @@ export function UploadForm() {
           name="image"
           type="file"
           accept="image/jpeg,image/png,image/webp,image/avif"
-          className="border border-line bg-bone px-3 py-3 text-ink file:mr-4 file:border-0 file:bg-ink file:px-4 file:py-2 file:text-bone"
+          className="border border-line bg-bone px-3 py-2.5 text-ink file:mr-4 file:border-0 file:bg-ink file:px-4 file:py-2 file:text-bone"
           required
         />
       </label>
@@ -115,8 +115,8 @@ export function UploadForm() {
         Description
         <textarea
           name="description"
-          rows={9}
-          className="border border-line bg-bone px-3 py-3 leading-7 text-ink"
+          rows={5}
+          className="border border-line bg-bone px-3 py-2.5 leading-7 text-ink"
           required
         />
       </label>
@@ -125,7 +125,7 @@ export function UploadForm() {
         <button
           type="submit"
           disabled={state === "submitting"}
-          className="border border-ink bg-ink px-5 py-3 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+          className="border border-ink bg-ink px-5 py-2.5 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
         >
           {state === "submitting" ? "Uploading..." : "Upload work"}
         </button>

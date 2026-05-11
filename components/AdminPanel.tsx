@@ -31,6 +31,7 @@ const tabs: Array<{ id: Tab; label: string }> = [
 
 export function AdminPanel() {
   const [tab, setTab] = useState<Tab>("add");
+  const [selectedKind, setSelectedKind] = useState<Kind>("paintings");
   const [password, setPassword] = useState("");
   const [works, setWorks] = useState<AdminWork[]>([]);
   const [selectedPath, setSelectedPath] = useState("");
@@ -38,9 +39,14 @@ export function AdminPanel() {
   const [submitState, setSubmitState] = useState<SubmitState>("idle");
   const [message, setMessage] = useState("");
 
+  const filteredWorks = useMemo(
+    () => works.filter((work) => work.kind === selectedKind),
+    [selectedKind, works]
+  );
+
   const selectedWork = useMemo(
-    () => works.find((work) => work.contentPath === selectedPath) ?? works[0] ?? null,
-    [selectedPath, works]
+    () => filteredWorks.find((work) => work.contentPath === selectedPath) ?? filteredWorks[0] ?? null,
+    [filteredWorks, selectedPath]
   );
 
   async function loadWorks() {
@@ -56,8 +62,13 @@ export function AdminPanel() {
       }
 
       const nextWorks = result.works ?? [];
+      const nextFilteredWorks = nextWorks.filter((work) => work.kind === selectedKind);
+
       setWorks(nextWorks);
-      setSelectedPath((current) => current || nextWorks[0]?.contentPath || "");
+      setSelectedPath((current) => {
+        const currentStillVisible = nextFilteredWorks.some((work) => work.contentPath === current);
+        return currentStillVisible ? current : nextFilteredWorks[0]?.contentPath || "";
+      });
       setLoadState("ready");
     } catch (error) {
       setLoadState("error");
@@ -144,8 +155,8 @@ export function AdminPanel() {
   }
 
   return (
-    <div className="grid gap-8">
-      <div className="flex flex-wrap gap-2 border-b border-line pb-4">
+    <div className="grid gap-5">
+      <div className="flex flex-wrap gap-2 border-b border-line pb-3">
         {tabs.map((item) => (
           <button
             key={item.id}
@@ -168,46 +179,72 @@ export function AdminPanel() {
       {tab === "add" ? <UploadForm /> : null}
 
       {tab !== "add" ? (
-        <section className="grid gap-6">
-          <div className="grid gap-4 border-b border-line pb-6 sm:grid-cols-[1fr_auto] sm:items-end">
+        <section className="grid gap-4">
+          <div className="grid gap-4 border-b border-line pb-4 sm:grid-cols-[1fr_auto] sm:items-end">
             <label className="grid gap-2 text-sm text-muted">
               Admin password
               <input
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 type="password"
-                className="border border-line bg-bone px-3 py-3 text-ink"
+                className="border border-line bg-bone px-3 py-2.5 text-ink"
               />
             </label>
             <button
               type="button"
               onClick={loadWorks}
               disabled={loadState === "loading"}
-              className="border border-ink bg-ink px-5 py-3 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+              className="border border-ink bg-ink px-5 py-2.5 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loadState === "loading" ? "Loading..." : "Load works"}
             </button>
           </div>
 
           {works.length > 0 ? (
-            <label className="grid gap-2 text-sm text-muted">
-              Work
-              <select
-                value={selectedWork?.contentPath ?? ""}
-                onChange={(event) => setSelectedPath(event.target.value)}
-                className="border border-line bg-bone px-3 py-3 text-ink"
-              >
-                {works.map((work) => (
-                  <option key={work.contentPath} value={work.contentPath}>
-                    {work.kind === "paintings" ? "Painting" : "Photo"} / {work.title}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="grid gap-4 sm:grid-cols-[auto_1fr] sm:items-end">
+              <div className="grid gap-2 text-sm text-muted">
+                Category
+                <div className="inline-flex border border-line bg-bone">
+                  {(["paintings", "photos"] as const).map((kind) => (
+                    <button
+                      key={kind}
+                      type="button"
+                      onClick={() => {
+                        setSelectedKind(kind);
+                        const first = works.find((work) => work.kind === kind);
+                        setSelectedPath(first?.contentPath || "");
+                      }}
+                      className={`px-4 py-2.5 text-sm transition ${
+                        selectedKind === kind
+                          ? "bg-ink text-bone"
+                          : "text-muted hover:text-ink"
+                      } ${kind === "photos" ? "border-l border-line" : ""}`}
+                    >
+                      {kind === "paintings" ? "Painting" : "Photo"}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <label className="grid gap-2 text-sm text-muted">
+                Work
+                <select
+                  value={selectedWork?.contentPath ?? ""}
+                  onChange={(event) => setSelectedPath(event.target.value)}
+                  className="border border-line bg-bone px-3 py-2.5 text-ink"
+                >
+                  {filteredWorks.map((work) => (
+                    <option key={work.contentPath} value={work.contentPath}>
+                      {work.title}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
           ) : null}
 
           {tab === "edit" && selectedWork ? (
-            <form key={selectedWork.contentPath} onSubmit={handleEdit} className="grid gap-6">
+            <form key={selectedWork.contentPath} onSubmit={handleEdit} className="grid gap-4">
               <input type="hidden" name="password" value={password} />
               <input type="hidden" name="contentPath" value={selectedWork.contentPath} />
               <input type="hidden" name="contentSha" value={selectedWork.contentSha} />
@@ -215,13 +252,13 @@ export function AdminPanel() {
               <input type="hidden" name="imageSha" value={selectedWork.imageSha ?? ""} />
               <input type="hidden" name="image" value={selectedWork.image} />
 
-              <div className="grid gap-5 sm:grid-cols-2">
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 <label className="grid gap-2 text-sm text-muted">
                   Type
                   <select
                     name="kind"
                     defaultValue={selectedWork.kind}
-                    className="border border-line bg-bone px-3 py-3 text-ink"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink"
                   >
                     <option value="paintings">Painting</option>
                     <option value="photos">Photo</option>
@@ -232,7 +269,7 @@ export function AdminPanel() {
                   <input
                     name="title"
                     defaultValue={selectedWork.title}
-                    className="border border-line bg-bone px-3 py-3 text-ink"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink"
                     required
                   />
                 </label>
@@ -241,7 +278,7 @@ export function AdminPanel() {
                   <input
                     name="slug"
                     defaultValue={selectedWork.slug}
-                    className="border border-line bg-bone px-3 py-3 text-ink"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink"
                     required
                   />
                 </label>
@@ -251,7 +288,7 @@ export function AdminPanel() {
                     name="date"
                     type="date"
                     defaultValue={selectedWork.date}
-                    className="border border-line bg-bone px-3 py-3 text-ink"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink"
                     required
                   />
                 </label>
@@ -260,7 +297,7 @@ export function AdminPanel() {
                   <input
                     name="materials"
                     defaultValue={selectedWork.materials ?? ""}
-                    className="border border-line bg-bone px-3 py-3 text-ink"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink"
                   />
                 </label>
                 <label className="grid gap-2 text-sm text-muted">
@@ -269,7 +306,7 @@ export function AdminPanel() {
                     name="replacementImage"
                     type="file"
                     accept="image/jpeg,image/png,image/webp,image/avif"
-                    className="border border-line bg-bone px-3 py-3 text-ink file:mr-4 file:border-0 file:bg-ink file:px-4 file:py-2 file:text-bone"
+                    className="border border-line bg-bone px-3 py-2.5 text-ink file:mr-4 file:border-0 file:bg-ink file:px-4 file:py-2 file:text-bone"
                   />
                 </label>
               </div>
@@ -278,9 +315,9 @@ export function AdminPanel() {
                 Description
                 <textarea
                   name="description"
-                  rows={9}
+                  rows={5}
                   defaultValue={selectedWork.description}
-                  className="border border-line bg-bone px-3 py-3 leading-7 text-ink"
+                  className="border border-line bg-bone px-3 py-2.5 leading-7 text-ink"
                   required
                 />
               </label>
@@ -288,7 +325,7 @@ export function AdminPanel() {
               <button
                 type="submit"
                 disabled={submitState === "submitting"}
-                className="w-fit border border-ink bg-ink px-5 py-3 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-fit border border-ink bg-ink px-5 py-2.5 text-sm text-bone transition hover:bg-transparent hover:text-ink disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {submitState === "submitting" ? "Saving..." : "Save changes"}
               </button>
@@ -296,7 +333,7 @@ export function AdminPanel() {
           ) : null}
 
           {tab === "delete" && selectedWork ? (
-            <div className="grid gap-4 border border-line p-5">
+            <div className="grid gap-4 border border-line p-4 sm:grid-cols-[1fr_auto] sm:items-center">
               <div>
                 <p className="text-sm text-muted">Selected work</p>
                 <h2 className="mt-2 text-2xl font-medium text-ink">{selectedWork.title}</h2>
@@ -306,7 +343,7 @@ export function AdminPanel() {
                 type="button"
                 onClick={handleDelete}
                 disabled={submitState === "submitting"}
-                className="w-fit border border-[#f0a7a7] px-5 py-3 text-sm text-[#f0a7a7] transition hover:bg-[#f0a7a7] hover:text-paper disabled:cursor-not-allowed disabled:opacity-60"
+                className="w-fit border border-[#f0a7a7] px-5 py-2.5 text-sm text-[#f0a7a7] transition hover:bg-[#f0a7a7] hover:text-paper disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {submitState === "submitting" ? "Deleting..." : "Delete work"}
               </button>

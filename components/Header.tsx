@@ -26,7 +26,7 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link href="/admin" className="px-2 py-2 transition-colors hover:text-ink sm:px-3">
+          <Link href="/admin" className="px-1.5 py-2 text-xs text-muted/60 transition-colors hover:text-ink sm:px-2">
             Admin
           </Link>
           <a
