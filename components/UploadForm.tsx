@@ -4,9 +4,14 @@ import { useState } from "react";
 
 type UploadState = "idle" | "submitting" | "success" | "error";
 
+function todayValue() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 export function UploadForm() {
   const [state, setState] = useState<UploadState>("idle");
   const [message, setMessage] = useState("");
+  const [dateKey, setDateKey] = useState(0);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -30,6 +35,7 @@ export function UploadForm() {
       setState("success");
       setMessage(result.message ?? "Uploaded. Vercel will redeploy after GitHub receives the commit.");
       form.reset();
+      setDateKey((current) => current + 1);
     } catch (error) {
       setState("error");
       setMessage(error instanceof Error ? error.message : "Upload failed.");
@@ -69,14 +75,20 @@ export function UploadForm() {
           <input
             name="slug"
             className="border border-line bg-bone px-3 py-3 text-ink"
-            placeholder="quiet-afternoon"
             required
           />
         </label>
 
         <label className="grid gap-2 text-sm text-muted">
           Date
-          <input name="date" type="date" className="border border-line bg-bone px-3 py-3 text-ink" required />
+          <input
+            key={dateKey}
+            name="date"
+            type="date"
+            defaultValue={todayValue()}
+            className="border border-line bg-bone px-3 py-3 text-ink"
+            required
+          />
         </label>
 
         <label className="grid gap-2 text-sm text-muted">
@@ -84,7 +96,6 @@ export function UploadForm() {
           <input
             name="materials"
             className="border border-line bg-bone px-3 py-3 text-ink"
-            placeholder="Oil on canvas"
           />
         </label>
       </div>
