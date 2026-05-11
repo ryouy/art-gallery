@@ -12,9 +12,12 @@ export function Header() {
         <Link
           href="/"
           className="text-base font-medium tracking-normal text-ink"
-          aria-label="ART INDEX home"
+          aria-label="Art Index home"
         >
           Art Index
+        </Link>
+        <Link href="/admin" className="mr-auto px-2 py-2 text-sm text-muted transition-colors hover:text-ink">
+          Admin
         </Link>
         <nav className="flex items-center gap-1 text-sm text-muted">
           {navItems.map((item) => (

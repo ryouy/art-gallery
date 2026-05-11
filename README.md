@@ -32,11 +32,11 @@ npm run build
 4. Add the environment variables listed below in Vercel.
 5. Every future push to GitHub will trigger a new Vercel deployment.
 
-## Upload from the Site
+## Manage from the Site
 
 Open `/admin` on the deployed site or local dev server.
 
-The upload page writes two files to GitHub:
+The admin page can add, edit, and delete works. Changes are written to GitHub:
 
 - `public/images/paintings` or `public/images/photos`
 - `content/paintings` or `content/photos`
