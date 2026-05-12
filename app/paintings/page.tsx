@@ -17,9 +17,7 @@ export default function PaintingsPage() {
         <h1 className="text-4xl font-medium leading-none tracking-normal text-ink sm:text-5xl">
           Paintings
         </h1>
-        <p className="mt-6 max-w-xl text-base leading-8 text-muted">
-          A quiet index of brushwork, negative space, and layered color.
-        </p>
+        
         </div>
       </header>
       <GalleryGrid items={items} kind="paintings" />

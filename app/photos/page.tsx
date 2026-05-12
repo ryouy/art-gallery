@@ -17,9 +17,7 @@ export default function PhotosPage() {
         <h1 className="text-4xl font-medium leading-none tracking-normal text-ink sm:text-5xl">
           Photos
         </h1>
-        <p className="mt-6 max-w-xl text-base leading-8 text-muted">
-          Photographic works shaped by light, place, and the feeling of time.
-        </p>
+        
         </div>
       </header>
       <GalleryGrid items={items} kind="photos" />
