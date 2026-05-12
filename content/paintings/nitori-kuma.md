@@ -1,5 +1,5 @@
 ---
-title: "nitori-huma"
+title: "nitori-kuma"
 slug: "nitori-kuma"
 image: "/images/paintings/nitori-kuma.png"
 date: "2025-06-09"
