@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { DetailWorkAdmin } from "@/components/DetailWorkAdmin";
 import { formatDate, type GalleryItem, type GalleryNeighbor } from "@/lib/gallery";
 
 type DetailProps = {
@@ -72,7 +73,9 @@ export function DetailFrame({
         </div>
       </div>
 
-      <nav className="mx-auto grid max-w-5xl gap-3 border-t border-line pt-6 text-sm sm:grid-cols-2">
+      <DetailWorkAdmin item={item} backHref={backHref} />
+
+      <nav className="mx-auto mt-6 grid max-w-5xl gap-3 border-t border-line pt-6 text-sm sm:grid-cols-2">
         {previous ? (
           <Link href={`${backHref}/${previous.slug}`} className="text-muted transition hover:text-ink">
             Previous: {previous.title}

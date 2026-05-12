@@ -7,7 +7,7 @@ export default function Home() {
 
   return (
     <div>
-      <section className="mx-auto grid min-h-[calc(100vh-57px)] max-w-7xl items-end gap-10 px-5 py-12 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:py-16">
+      <section className="mx-auto grid min-h-[calc(100vh-57px)] max-w-7xl items-start gap-10 px-5 pt-3 pb-10 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:pt-6 lg:pb-16">
         <div className="max-w-2xl pb-4">
           <p className="mb-5 text-sm text-muted">
             Paintings and photographs

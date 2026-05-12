@@ -14,7 +14,7 @@ export default function PhotosPage() {
       <header className="mb-10 grid gap-6 border-b border-line pb-8 lg:grid-cols-[0.7fr_1fr]">
         <p className="text-sm text-muted">Archive / 02</p>
         <div>
-        <h1 className="text-5xl font-medium leading-none tracking-normal text-ink sm:text-7xl">
+        <h1 className="text-4xl font-medium leading-none tracking-normal text-ink sm:text-5xl">
           Photos
         </h1>
         <p className="mt-6 max-w-xl text-base leading-8 text-muted">
@@ -22,7 +22,7 @@ export default function PhotosPage() {
         </p>
         </div>
       </header>
-      <GalleryGrid items={items} />
+      <GalleryGrid items={items} kind="photos" />
     </div>
   );
 }
