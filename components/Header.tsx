@@ -7,14 +7,14 @@ const navItems = [
 
 export function Header() {
   return (
-    <header className="sticky top-0 z-30 border-b border-line bg-paper/90 backdrop-blur-md">
+    <header className="sticky top-0 z-30">
       <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-5 py-3 sm:flex-nowrap sm:px-8">
         <Link
           href="/"
           className="text-base font-medium tracking-normal text-ink"
           aria-label="Art Index home"
         >
-          Art Index
+          Atelier Index
         </Link>
         <nav className="flex items-center gap-1 text-sm text-muted">
           {navItems.map((item) => (

@@ -53,12 +53,12 @@ export function UploadForm() {
           </select>
         </label>
 
-        <label className="grid gap-2 text-sm text-muted">
+        <label className="grid w-48 gap-1.5 text-xs text-muted">
           Admin password
           <input
             name="password"
-            type="password"
-            className="border border-line bg-bone px-3 py-2.5 text-ink"
+            type="text"
+            className="border border-line bg-bone px-2.5 py-1.5 text-sm text-ink"
             required
           />
         </label>

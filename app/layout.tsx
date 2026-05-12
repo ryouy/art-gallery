@@ -4,10 +4,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Art Index",
-    template: "%s | Art Index"
+    default: "Atelier Index",
+    template: "%s | Atelier Index"
   },
-  description: "A refined online index of paintings and photographs.",
+  description: "An online gallery of paintings and photographs.",
   icons: {
     icon: "/favi.svg"
   }

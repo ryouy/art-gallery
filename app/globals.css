@@ -17,11 +17,25 @@ html {
 }
 
 body {
+  position: relative;
+  isolation: isolate;
   min-height: 100vh;
   background:
-    radial-gradient(circle at 70% 12%, rgba(242, 239, 231, 0.04), transparent 28rem),
+    radial-gradient(ellipse at 12% 18%, rgba(0, 209, 255, 0.42), transparent 48%),
+    radial-gradient(ellipse at 88% 16%, rgba(255, 74, 168, 0.36), transparent 46%),
+    radial-gradient(ellipse at 52% 92%, rgba(73, 255, 154, 0.28), transparent 50%),
+    radial-gradient(ellipse at 74% 72%, rgba(255, 183, 74, 0.22), transparent 45%),
+    linear-gradient(135deg, rgba(105, 82, 255, 0.34), rgba(21, 21, 20, 0.22) 58%),
     #151514;
+  background-attachment: fixed;
+  background-size: 170% 170%, 165% 165%, 175% 175%, 160% 160%, 190% 190%, auto;
   color: #f2efe7;
+  animation: galleryGradient 120s ease-in-out infinite alternate;
+}
+
+body > * {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {
@@ -31,4 +45,24 @@ body {
 
 .prose-gallery p + p {
   margin-top: 1rem;
+}
+
+@keyframes galleryGradient {
+  0% {
+    background-position: 0% 18%, 100% 10%, 18% 100%, 88% 74%, 0% 50%, 0 0;
+  }
+
+  50% {
+    background-position: 34% 30%, 64% 44%, 58% 56%, 44% 40%, 52% 50%, 0 0;
+  }
+
+  100% {
+    background-position: 78% 54%, 12% 72%, 44% 12%, 24% 18%, 100% 50%, 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body {
+    animation: none;
+  }
 }

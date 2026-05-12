@@ -9,11 +9,9 @@ export default function Home() {
     <div>
       <section className="mx-auto grid min-h-[calc(100vh-57px)] max-w-7xl items-start gap-10 px-5 pt-3 pb-10 sm:px-8 lg:grid-cols-[0.82fr_1.18fr] lg:pt-6 lg:pb-16">
         <div className="max-w-2xl pb-4">
-          <p className="mb-5 text-sm text-muted">
-            Paintings and photographs
-          </p>
+         
           <h1 className="max-w-xl text-5xl font-medium leading-none tracking-normal text-ink sm:text-7xl lg:text-8xl">
-            Art Index
+            
           </h1>
           <p className="mt-8 max-w-md text-base leading-8 text-muted">
             A quiet archive for recent paintings and photographs.
@@ -53,7 +51,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="border-t border-line bg-bone">
+      <section className="border-t border-line">
         <div className="mx-auto max-w-7xl px-5 py-12 sm:px-8 sm:py-16">
           <div className="mb-8 flex items-end justify-between gap-4 border-b border-line pb-5">
             <div>

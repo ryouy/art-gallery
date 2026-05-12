@@ -243,6 +243,13 @@ export function AdminPanel() {
             </div>
           ) : null}
 
+          {selectedWork ? (
+            <div className="grid gap-1 border-b border-line pb-4 text-xs leading-5 text-muted">
+              <p>Content path: {selectedWork.contentPath}</p>
+              <p>Image path: {selectedWork.imagePath}</p>
+            </div>
+          ) : null}
+
           {tab === "edit" && selectedWork ? (
             <form key={selectedWork.contentPath} onSubmit={handleEdit} className="grid gap-4">
               <input type="hidden" name="password" value={password} />
